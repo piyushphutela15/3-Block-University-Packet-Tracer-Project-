@@ -1,0 +1,13 @@
+! Wireless LAN Controller - high-level notes for Packet Tracer / real WLC
+! (Exact commands depend on WLC model; Packet Tracer GUI often used)
+
+! Management interface (on management VLAN 10) - set via GUI or CLI
+! Example settings (pseudo-CLI):
+! Management IP: 10.10.10.100
+! Default GW: 10.10.10.1
+! SSIDs:
+! - Uni-Student -> VLAN 50 (WPA2-PSK or 802.1X)
+! - Uni-Staff -> VLAN 30 (WPA2-Enterprise)
+! - Uni-Guest -> VLAN 20 (Captive portal / separate VLAN)
+
+! If using controller in Packet Tracer, use the GUI to map SSIDs to VLANs and set security.

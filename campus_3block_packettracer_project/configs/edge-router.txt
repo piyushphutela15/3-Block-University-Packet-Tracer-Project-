@@ -1,0 +1,20 @@
+! Edge Router
+hostname EDGE-RTR
+no ip domain-lookup
+
+interface GigabitEthernet0/0
+ description To-Core
+ ip address 192.0.2.2 255.255.255.252
+ ip nat outside
+
+interface GigabitEthernet0/1
+ description To-ISP
+ ip address 203.0.113.2 255.255.255.0
+ ip nat inside
+
+! NAT
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+access-list 1 permit 10.0.0.0 0.255.255.255
+
+! Basic routing (if using static)
+ip route 10.0.0.0 255.0.0.0 192.0.2.1

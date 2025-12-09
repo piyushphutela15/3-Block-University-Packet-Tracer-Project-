@@ -1,0 +1,77 @@
+! Core switch (Layer 3)
+hostname CORE
+no ip domain-lookup
+ip domain-name university.local
+
+! Enable IP routing
+ip routing
+
+! VLAN SVIs
+interface Vlan10
+ description Management
+ ip address 10.10.10.1 255.255.255.0
+ no shutdown
+
+interface Vlan20
+ description Student
+ ip address 10.20.0.1 255.255.0.0
+ no shutdown
+
+interface Vlan30
+ description Staff
+ ip address 10.30.0.1 255.255.255.0
+ no shutdown
+
+interface Vlan40
+ description Admin
+ ip address 10.40.0.1 255.255.255.0
+ no shutdown
+
+interface Vlan50
+ description Wireless
+ ip address 10.50.0.1 255.255.255.0
+ no shutdown
+
+interface Vlan60
+ description Voice
+ ip address 10.60.0.1 255.255.255.0
+ no shutdown
+
+! Example physical interfaces to Dist-A (adjust to your lab port numbers)
+interface range GigabitEthernet1/1 - 2
+ description To-Dist-A
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+
+! Example to Dist-B
+interface range GigabitEthernet1/3 - 4
+ description To-Dist-B
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 2 mode active
+
+interface Port-channel2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+
+! STP
+spanning-tree mode rapid-pvst
+spanning-tree vlan 1-4094 root primary
+
+! Default route to edge router
+ip route 0.0.0.0 0.0.0.0 192.0.2.2
+
+! Management user
+username admin privilege 15 secret StrongPass123
+
+! Enable SSH
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line vty 0 4
+ transport input ssh
+ login local

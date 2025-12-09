@@ -1,0 +1,23 @@
+! Distribution Switch - Block A
+hostname DIST-B
+no ip domain-lookup
+
+spanning-tree mode rapid-pvst
+spanning-tree vlan 1-4094 root secondary
+
+! Trunk to CORE
+interface range GigabitEthernet0/1 - 2
+ description To-Core
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 2 mode active
+
+interface Port-channel2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+
+! Trunk to Access switches (example)
+interface range GigabitEthernet0/3 - 6
+ description To-Access-Floor1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
